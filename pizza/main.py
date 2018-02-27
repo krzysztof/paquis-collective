@@ -24,13 +24,13 @@ class PrecomputedPizza:
             ingridients.append(cnt)
         return min(ingridients)
 
-pizza = [
-    'TTTTT',
-    'TMMMT',
-    'TTTTT'
-]
-comp = PrecomputedPizza(pizza)
-print(comp.area(0, 0, 0, 0))
+# pizza = [
+#     'TTTTT',
+#     'TMMMT',
+#     'TTTTT'
+# ]
+# comp = PrecomputedPizza(pizza)
+# print(comp.area(0, 0, 0, 0))
 
 # Example:
 #   area(0,0,1,1)
@@ -38,13 +38,13 @@ print(comp.area(0, 0, 0, 0))
 #    [TT]TTT,
 #    [TM]MMT,
 #     TT TTT
-L = 1
 
-def find(r, c, r2, c2):
-    if comp.area(r, c, r2, c2) < L
-    for colsp in range(c+1, c2-1):
-        find(r, colsp, r2, colsp)
-    for rowsp in range(r+1, r2-1):
-        find(rowsp, c, rowsp, c2)
+# def find(r, c, r2, c2):
+#     L = 1
+#     if comp.area(r, c, r2, c2) <= L:
+#         for colsp in range(c+1, c2-1):
+#             find(r, colsp, r2, colsp)
+#         for rowsp in range(r+1, r2-1):
+#             find(rowsp, c, rowsp, c2)
 
-find(0, 0, 3, 5)
+# find(0, 0, 3, 5)
