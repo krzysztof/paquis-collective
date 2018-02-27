@@ -1,3 +1,4 @@
+from collections import deque
 import sys
 import os
 
@@ -71,44 +72,49 @@ def write_sol():
         fp.write(sol)
 
 
-def find(sp, cursplits):
+def find():
     global maxsplitsA
     global maxsplits
 
-    r, c, r2, c2 = sp
-    A = getArea(r, c, r2, c2)
-    if A < (2 * L):
-        return 0, False
+    q = deque()
+    q.append(([0, 0, nrow - 1, ncol - 1], []))
+    while q:
+        sp, cursplits = q.pop()
 
-    S0, valid = compScore(sp)
-    S0new = (sum(s for _, s in cursplits) + S0)
-    if  S0new > maxsplitsA and valid:
-        maxsplitsA = S0new
-        maxsplits = dpc(cursplits) + [(sp,S0)]
-        write_sol()
+        r, c, r2, c2 = sp
+        A = getArea(r, c, r2, c2)
+        if A < (2 * L):
+            continue
 
-    for colsp in range(c2 - c - 1):  # 0-> n-1 splits
+        S0, valid = compScore(sp)
+        S0new = (sum(s for _, s in cursplits) + S0)
+        if  S0new > maxsplitsA and valid:
+            maxsplitsA = S0new
+            maxsplits = dpc(cursplits) + [(sp,S0)]
+            write_sol()
 
-        spA = [r, c, r2, c + colsp]
-        S, valid = compScore(spA)
+        for colsp in range(c2 - c - 1):  # 0-> n-1 splits
 
-        spB = [r, c + colsp + 1, r2, c2]
-        S2, valid2 = compScore(spB)
+            spA = [r, c, r2, c + colsp]
+            S, valid = compScore(spA)
 
-        cursplits2 = dpc(cursplits) + ([(spA, S), ] if valid else [])
-        find(spB, cursplits2)
-        cursplits2 = dpc(cursplits) + ([(spB, S2), ] if valid2 else [])
-        find(spA, cursplits2)
-    for rowsp in range(r2 - r - 1):
-        spA = [r, c, r + rowsp, c2]
-        S, valid = compScore(spA)
+            spB = [r, c + colsp + 1, r2, c2]
+            S2, valid2 = compScore(spB)
 
-        spB = [r + rowsp + 1, c, r2, c2]
-        S2, valid2 = compScore(spB)
+            cursplits2 = dpc(cursplits) + ([(spA, S), ] if valid else [])
+            q.append([spB, cursplits2])
+            cursplits2 = dpc(cursplits) + ([(spB, S2), ] if valid2 else [])
+            q.append([spA, cursplits2])
+        for rowsp in range(r2 - r - 1):
+            spA = [r, c, r + rowsp, c2]
+            S, valid = compScore(spA)
 
-        cursplits2 = dpc(cursplits) + ([(spA, S), ] if valid else [])
-        find(spB, cursplits2)
-        cursplits2 = dpc(cursplits) + ([(spB, S2), ] if valid2 else [])
-        find(spA, cursplits2)
+            spB = [r + rowsp + 1, c, r2, c2]
+            S2, valid2 = compScore(spB)
 
-find([0, 0, nrow - 1, ncol - 1], [])
+            cursplits2 = dpc(cursplits) + ([(spA, S), ] if valid else [])
+            q.append([spB, cursplits2])
+            cursplits2 = dpc(cursplits) + ([(spB, S2), ] if valid2 else [])
+            q.append([spA, cursplits2])
+
+find()
