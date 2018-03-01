@@ -33,6 +33,6 @@ def ride_info(t, car_r, car_c, ride, rdist, T):
 
     t_finish = t_ride_start + rdist
     # Can you make the trip?
-    can_make_it = t_finish < t_end
+    can_make_it = t_finish <= t_end
     bonus = t_arrive == t_start
     return can_make_it, t_finish, car_to_ride_dist, bonus

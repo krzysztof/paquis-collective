@@ -55,7 +55,7 @@ while t < T:
                 choices.append((ride_idx, t_finish, arrive_dist, rdist, bonus))
         # select min t_finish
         if choices:
-            ride_idx, t_finish, arrive_dist, rdist, bonus = min(choices, key=lambda x: (x[1], (-x[3]-x[4])))
+            ride_idx, t_finish, arrive_dist, rdist, bonus = min(choices, key=lambda x: (x[2], x[1], (-x[3] -x[4])))
             #ride_idx, t_finish, arrive_dist, rdist, bonus = min(choices, key=lambda x: x[2])
             #ride_idx, t_finish, arrive_dist, rdist, bonus = min(choices, key=lambda x: (x[1], (-x[3]-x[4])))
             #ride_idx, t_finish, arrive_dist, rdist, bonus = max(choices, key=lambda x: (x[3] + x[4], -x[1]))
@@ -74,5 +74,5 @@ while t < T:
     t = max(min(car_free_at), t + 1)
 
 print("Score: {}".format(score))
-
+#print(car_choices)
 save_data(car_choices, prefix='kn_greedy1')
