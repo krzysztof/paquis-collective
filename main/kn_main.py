@@ -22,6 +22,7 @@ ride_dists = [dist(*r[:4]) for r in rides]
 t = 0
 car_choices = [[] for _ in range(F)]
 ride_taken = [False, ] * N
+score = 0
 while t < T:
     for car_idx, (car_r, car_c) in enumerate(car_pos):
         choices = []
@@ -33,17 +34,21 @@ while t < T:
             if ride_taken[ride_idx]:
                 continue
             rdist = ride_dists[ride_idx]
-            possible, t_finish = ride_info(t, car_r, car_c, rides, ride_dists, ride_idx, T)
+            possible, t_finish, bonus = ride_info(t, car_r, car_c, rides, ride_dists, ride_idx, T)
             if possible:
-                choices.append((ride_idx, t_finish, rdist))
+                choices.append((ride_idx, t_finish, rdist, bonus))
         # select min t_finish
         if choices:
-            ride_idx, t_finish, rdist = min(choices, key=lambda x: x[1])
+            ride_idx, t_finish, rdist, bonus = min(choices, key=lambda x: (x[1], -x[2]))
             car_choices[car_idx].append(ride_idx)
             ride_taken[ride_idx] = True
             car_free_at[car_idx] = t_finish
-    t = max(min(car_free_at), t + 1)
-    #t += 1
+            score += rdist + (B if bonus else 0)
+            car_pos[car_idx] = rides[ride_idx][0], rides[ride_idx][1]
+    #t = max(min(car_free_at), t + 1)
+    t += 1
+
+print("Score: {}".format(score))
 
 car_choices2 = [list(map(str, [len(i), ] + i)) for i in car_choices]
 data = "\n".join([" ".join(cc) for cc in car_choices2])
