@@ -24,16 +24,15 @@ def write_output(infile, data, prefix="", rnd=0):
 # write_output(str([1, 2, 3]), prefix='kn_bruteforce', rnd=5)
 
 
-def ride_info(t, car_r, car_c, rides, ride_dists, ride_idx, T):
-    ride_r0, ride_c0, ride_r1, ride_c1, t_start, t_end = rides[ride_idx]
-    ride_dist = ride_dists[ride_idx]
+def ride_info(t, car_r, car_c, ride, rdist, T):
+    ride_r0, ride_c0, ride_r1, ride_c1, t_start, t_end = ride
     car_to_ride_dist = dist(car_r, car_c, ride_r0, ride_c0)
     t_arrive = t + car_to_ride_dist
     t_wait = max(t_start - t_arrive, 0)
     t_ride_start = t_arrive + t_wait
 
-    t_finish = t_ride_start + ride_dist
+    t_finish = t_ride_start + rdist
     # Can you make the trip?
-    can_make_it = t_finish <= t_end
+    can_make_it = t_finish < t_end
     bonus = t_arrive == t_start
-    return can_make_it, t_finish, bonus
+    return can_make_it, t_finish, car_to_ride_dist, bonus
