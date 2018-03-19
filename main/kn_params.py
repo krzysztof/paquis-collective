@@ -79,10 +79,10 @@ for p1, p2, p3 in combs:
             for idx in for_removal:
                 del rides_idxs[idx]
         i += 1
-        #if i % 1000 == 0:
-        #    print(t, T, len(rides_idxs))
-        #    print("Score: {}".format(score))
-        #    save_data(car_choices, prefix='kn_spam')
+        if i % 1000 == 0:
+            print(t, T, len(rides_idxs))
+            print("Score: {}".format(score))
+            save_data(car_choices, prefix='kn_spam')
         t = max(min(car_free_at), t + 1)
         if score > scoremax[0]:
             scoremax = [score, [p1, p2, p3]]
